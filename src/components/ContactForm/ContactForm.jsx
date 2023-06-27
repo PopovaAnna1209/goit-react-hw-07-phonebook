@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import {
-  useGetContactsQuery,
-  useAddContactMutation,
-} from '../../redux/contactsSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact } from '../../redux/operations';
+import { selectContacts } from '../../redux/selectors';
 
 // import PropTypes from 'prop-types';
 import './ContactForm.module.css';
@@ -10,8 +9,8 @@ import './ContactForm.module.css';
 export const ContactForm = () => {
   const [name, setName] = useState('');
   const [phone, setNumber] = useState('');
-  const { data: contacts } = useGetContactsQuery();
-  const [addContact] = useAddContactMutation();
+  const dispatch = useDispatch();
+  const contacts = useSelector(selectContacts);
 
   const handleChange = event => {
     const { name, value } = event.target;
@@ -41,7 +40,7 @@ export const ContactForm = () => {
   );
   enterContacts
     ? alert(`${name} or ${phone} is already in contacts`)
-    : addContact(contact);
+    : dispatch(addContact(contact));
 
   setName('');
   setNumber('');
